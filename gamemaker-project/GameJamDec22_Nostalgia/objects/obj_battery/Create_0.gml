@@ -1,0 +1,2 @@
+pickupFunction = addBattery
+itemInit()

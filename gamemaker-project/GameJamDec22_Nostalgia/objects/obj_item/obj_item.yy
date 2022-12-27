@@ -1,9 +1,6 @@
 {
-  "name": "obj_player",
-  "spriteId": {
-    "name": "spr_player_main",
-    "path": "sprites/spr_player_main/spr_player_main.yy",
-  },
+  "name": "obj_item",
+  "spriteId": null,
   "spriteMaskId": null,
   "visible": true,
   "solid": false,
@@ -22,10 +19,7 @@
   "physicsStartAwake": true,
   "physicsKinematic": false,
   "physicsShapePoints": [],
-  "eventList": [
-    {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
-    {"isDnD":false,"eventNum":0,"eventType":3,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
-  ],
+  "eventList": [],
   "properties": [],
   "overriddenProperties": [],
   "parent": {

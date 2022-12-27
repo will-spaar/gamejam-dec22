@@ -1,8 +1,8 @@
 {
-  "name": "obj_player",
+  "name": "obj_keyDoor",
   "spriteId": {
-    "name": "spr_player_main",
-    "path": "sprites/spr_player_main/spr_player_main.yy",
+    "name": "spr_keyDoor",
+    "path": "sprites/spr_keyDoor/spr_keyDoor.yy",
   },
   "spriteMaskId": null,
   "visible": true,
@@ -10,7 +10,10 @@
   "persistent": false,
   "physicsObject": false,
   "managed": true,
-  "parentObjectId": null,
+  "parentObjectId": {
+    "name": "obj_wall",
+    "path": "objects/obj_wall/obj_wall.yy",
+  },
   "physicsSensor": false,
   "physicsShape": 1,
   "physicsGroup": 1,

@@ -32,3 +32,25 @@ function splitString(str, divider){
 		}
 	return arr;
 }
+
+function getSpriteForRoomVersion(baseName) {
+    if isGreenRoom() {
+		return asset_get_index(baseName + "_green")
+	}
+	else {
+		return asset_get_index(baseName + "_main")
+	}
+}
+
+function isGreenRoom() {
+	roomName = room_get_name(room)
+    roomPrefix = splitString(roomName, "_")[0]
+	if (roomPrefix = "green") {
+		return true
+	}
+	return false
+}
+
+function destroyPersistentObject(objId) {
+	ds_list_add(global.destroyedObjects, objId)
+}

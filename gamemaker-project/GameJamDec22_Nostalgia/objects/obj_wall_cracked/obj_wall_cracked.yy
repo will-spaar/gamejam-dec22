@@ -1,16 +1,19 @@
 {
-  "name": "obj_player",
+  "name": "obj_wall_cracked",
   "spriteId": {
-    "name": "spr_player_main",
-    "path": "sprites/spr_player_main/spr_player_main.yy",
+    "name": "spr_gate_cracked",
+    "path": "sprites/spr_gate_cracked/spr_gate_cracked.yy",
   },
   "spriteMaskId": null,
   "visible": true,
   "solid": false,
-  "persistent": false,
+  "persistent": true,
   "physicsObject": false,
   "managed": true,
-  "parentObjectId": null,
+  "parentObjectId": {
+    "name": "obj_wall",
+    "path": "objects/obj_wall/obj_wall.yy",
+  },
   "physicsSensor": false,
   "physicsShape": 1,
   "physicsGroup": 1,
@@ -25,6 +28,7 @@
   "eventList": [
     {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
     {"isDnD":false,"eventNum":0,"eventType":3,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"isDnD":false,"eventNum":0,"eventType":1,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
   ],
   "properties": [],
   "overriddenProperties": [],

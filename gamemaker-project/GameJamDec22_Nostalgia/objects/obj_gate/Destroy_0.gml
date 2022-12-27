@@ -1,0 +1,1 @@
+destroyPersistentObject(id)

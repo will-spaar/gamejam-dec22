@@ -1,0 +1,2 @@
+pickupFunction = collectKey
+itemInit()

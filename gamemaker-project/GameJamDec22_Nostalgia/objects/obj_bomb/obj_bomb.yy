@@ -1,8 +1,8 @@
 {
-  "name": "obj_player",
+  "name": "obj_bomb",
   "spriteId": {
-    "name": "spr_player_main",
-    "path": "sprites/spr_player_main/spr_player_main.yy",
+    "name": "spr_bomb",
+    "path": "sprites/spr_bomb/spr_bomb.yy",
   },
   "spriteMaskId": null,
   "visible": true,
