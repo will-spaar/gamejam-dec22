@@ -1,62 +1,18 @@
-function addBattery()
-{
-    batteryAmt = 30
-    global.battery += batteryAmt
-    if global.battery > 100 {
-        global.battery = 100
+function drawJumpMeter(){
+    // check that the player is charging a jump
+    jumpForce = obj_player.jumpForce
+    if jumpForce == 0 {
+        return
     }
-}
 
-function subtractBattery(batteryAmt)
-{
-    global.battery -= batteryAmt
-    if global.battery < 0 {
-        global.battery = 0
-        roomName = room_get_name(room)
-        roomSuffix = splitString(roomName, "_")[1]
-        show_debug_message(roomName)
-        currentRoom = "main_" + roomSuffix
-        showEmptyBattery(currentRoom)
-    }
-}
+    xStart = obj_player.x - 40
+    yStart = obj_player.y 
+    xEnd   = xStart - 10
+    yEnd   = yStart - 100
+    jumpForce = obj_player.jumpForce
 
-function drawHUD(){
-    if isGreenRoom() {
-        draw_text(5, 5, string(global.battery) + "%")
-    }
-}
-
-function batteryUpdate()
-{
-    if isGreenRoom() {
-        global.batteryTimer -= 1
-        if global.batteryTimer <= 0 {
-            global.batteryTimer = global.maxBatteryTimer
-            subtractBattery(1)
-        }
-    }
-}
-
-function gameStart() {
-    global.maxBatteryTimer = 20
-    global.batteryTimer = global.maxBatteryTimer
-    global.battery = 5
-    global.keys = 0
-    global.collectedItems = ds_list_create()
-    global.destroyedObjects = ds_list_create()
-    room_goto(main_room1)
-}
-
-function collectKey() {
-    global.keys += 1
-}
-
-function useKey() {
-    global.keys -= 1
-}
-
-function showEmptyBattery(currentRoom)
-{
-    global.previousRoom = currentRoom
-    room_goto(no_battery)
+    draw_set_color(c_red)
+    draw_roundrect(xEnd, yStart - (jumpForce * 10), xStart, yStart, false)
+    draw_set_color(c_black)
+    draw_roundrect(xEnd, yEnd, xStart, yStart, true)
 }

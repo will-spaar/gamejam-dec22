@@ -1,2 +1,0 @@
-pickupFunction = collectKey
-itemInit()

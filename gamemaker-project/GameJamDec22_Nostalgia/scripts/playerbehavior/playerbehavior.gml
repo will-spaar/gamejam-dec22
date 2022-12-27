@@ -1,121 +1,98 @@
-function playerInit(){
-    moveSpeed = 4
-    roomName = room_get_name(room)
-    roomPrefix = splitString(roomName, "_")[0]
-    roomSuffix = splitString(roomName, "_")[1]
-    sprite_index = getSpriteForRoomVersion("spr_player")
-
-    if (variable_global_exists("xPos")) {
-        x = global.xPos
-        y = global.yPos
-    }
+function playerInit() {
+    // initialize variables - zero speed, facing right, default sprite
+    sprite_index = spr_player
+    xDir = 1
+    image_speed = 1
+    xSpeed = 0
+    maxXSpeed = 5
+    ySpeed = 0
+    gravForce = 0.3
+    jumpForce = 0
 }
 
-function playerUpdate(){
-    playerDefineControls()
+function playerUpdate() {
+    playerControls()
+    updatePlayerSprite()
 
-    if place_meeting(x, y, obj_item) {
-        item = instance_place(x, y, obj_item)
-        collectItem(item)
-    }
-    xDir = key_right_held - key_left_held
-    yDir = key_down_held - key_up_held
-    if key_space_pressed {
-        playerSwitchRoomVersion()
-    }
-    if key_shift_pressed {
-        createBomb(x, y)
-    }
-
-    // move character
-	xSpeed  = moveSpeed * xDir
-    ySpeed  = moveSpeed * yDir
-
-    if place_meeting(x + xSpeed, y, obj_wall) {
-        while !(place_meeting(x + sign(xSpeed), y, obj_wall)) {
-            x += sign(xSpeed)
-        }
-        xSpeed = 0
-    }
-
+    // if the player is near the ground, make pixel-perfect contact
     if place_meeting(x, y + ySpeed, obj_wall) {
-        while !(place_meeting(x, y + sign(ySpeed), obj_wall)) {
-            y += sign(ySpeed)
+        while (!place_meeting(x, y + 1, obj_wall)) {
+            y += 1
         }
         ySpeed = 0
     }
 
-    x       += xSpeed
-    y       += ySpeed
-    depth = -y
+    // if the player is in the air, apply gravity
+    if !place_meeting(x, y + 1, obj_wall) {
+        ySpeed += gravForce
+    }
+
+    // reduce speed while nose or tail grinding
+    if image_angle != 0 && place_meeting(x, y + 1, obj_wall) {
+        xSpeed -= (0.1 * sign(xSpeed))
+    }
+
+    // stop nose or tail grinding if on the ground and speed is low
+    if abs(xSpeed) < 1 && place_meeting(x, y + 1, obj_wall) {
+        image_angle = 0        
+        while (!place_meeting(x, y + 1, obj_wall)) {
+            y += 1
+        }
+        ySpeed = 0
+    }
+
+    // limit horizontal speed
+    xSpeed = max(xSpeed, -maxXSpeed)
+    xSpeed = min(xSpeed, maxXSpeed)
+
+    // move the player
+    x += xSpeed
+    y += ySpeed
 }
 
-function playerDefineControls(){
-    #region hold keys
-    key_up_held     = keyboard_check(ord("W"))
-    key_left_held   = keyboard_check(ord("A"))
-    key_down_held   = keyboard_check(ord("S"))
-    key_right_held  = keyboard_check(ord("D"))
-    #endregion
+function playerControls() {
+    key_right = keyboard_check(ord("D"))
+    key_left = keyboard_check(ord("A"))
+    key_space = keyboard_check(vk_space)
+    key_space_released = keyboard_check_released(vk_space)
+    key_right_pressed = keyboard_check_pressed(ord("D"))
+    key_left_pressed = keyboard_check_pressed(ord("A"))
+    key_up_pressed = keyboard_check_pressed(ord("W"))
 
-    #region press keys
-    key_up_pressed     = keyboard_check_pressed(ord("W"))
-    key_left_pressed   = keyboard_check_pressed(ord("A"))
-    key_down_pressed   = keyboard_check_pressed(ord("S"))
-    key_right_pressed  = keyboard_check_pressed(ord("D"))
-    key_space_pressed  = keyboard_check_pressed(vk_space)
-    key_shift_pressed  = keyboard_check_pressed(vk_lshift)
-    #endregion
+    if place_meeting(x, y + 1, obj_wall) {
+        if key_right {
+            xSpeed += 0.2
+        }
 
-    #region release keys
-    key_up_released     = keyboard_check_released(ord("W"))
-    key_left_released   = keyboard_check_released(ord("A"))
-    key_down_released   = keyboard_check_released(ord("S"))
-    key_right_released  = keyboard_check_released(ord("D"))
-    #endregion
-}
+        if key_left {
+            xSpeed -= 0.2
+        }
 
-function playerSwitchRoomVersion() {
-    if (roomPrefix == "green")
-    {
-        newRoomPrefix = "main"
+        if key_space {
+            jumpForce += 0.3
+            jumpForce = min(jumpForce, 10)
+        }
+
+        if key_space_released {
+            ySpeed = -jumpForce
+            jumpForce = 0
+        }
     }
     else {
-        newRoomPrefix = "green"
-    }
-    newRoomName = newRoomPrefix + "_" + roomSuffix
-    newRoomIndex = asset_get_index(newRoomName)
-    global.xPos = x
-    global.yPos = y
-
-    if (newRoomPrefix == "green" && global.battery <= 0)
-    {
-        currentRoom = roomPrefix + "_" + roomSuffix
-        showEmptyBattery(currentRoom)
-    }
-    else
-    {
-        room_goto(newRoomIndex)
-    }
-}
-
-function createBomb(x, y) {
-    if (isGreenRoom()) {
-        instance_create_layer(x, y, "Instances", obj_bomb)
-    }
-}
-
-function bombInit() {
-    bombTimer = 120
-}
-
-function bombUpdate() {
-    bombTimer -= 1
-    if bombTimer <= 0
-    {
-        if (distance_to_object(obj_wall_cracked) < 80) {
-            instance_destroy(obj_wall_cracked, true)
+        if key_right_pressed {
+            image_angle -= 45
         }
-        instance_destroy()
+        if key_left_pressed {
+            image_angle += 45
+        }
+    }
+}
+
+function updatePlayerSprite() {
+    if xSpeed > 0 {
+        image_xscale = 1
+    }
+    else {
+        image_xscale = -1
     }
 }

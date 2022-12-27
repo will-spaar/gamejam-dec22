@@ -1,2 +1,0 @@
-pickupFunction = addBattery
-itemInit()
