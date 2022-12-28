@@ -1,3 +1,1 @@
-drawJumpMeter()
-drawDebugInfo()
-drawTextAbovePlayer()
+drawHud()

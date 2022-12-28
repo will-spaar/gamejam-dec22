@@ -3,12 +3,13 @@ function playerInit() {
     sprite_index = spr_player
     image_speed = 2
     spriteRotation = 0
+    goodAngleThreshold = 25
     xDir = 1
 
     xSpeed = 0
     ySpeed = 0
-    maxXSpeed = 12
-    maxYSpeed = 12
+    maxXSpeed = 8
+    maxYSpeed = 8
     moveSpeed = 0
 
     gravForce = 0.1
@@ -76,16 +77,24 @@ function playerUpdate() {
     // move player
     x += xSpeed
     y += ySpeed
+	
+	// if outside the level boundaries, restart the level
+	if x > room_width || x < 0 {
+		room_restart()
+	}
+	if y > room_height {
+		room_restart()
+	}
 }
-
 
 function playerControls() {
     key_right = keyboard_check(ord("D"))
     key_left = keyboard_check(ord("A"))
     key_space = keyboard_check(vk_space)
+	key_shift = keyboard_check(vk_shift)
     key_space_released = keyboard_check_released(vk_space)
 
-    // if on the groumd, allow the player to jump control horizontal speed
+    // if on the ground, allow the player to jump control horizontal speed
     if onGround {
         if !(abs(xSpeed) < 0.2 && ySpeed != 0) {
             if key_right {
@@ -103,30 +112,26 @@ function playerControls() {
         }
 
         if key_space_released {
-            ySpeed = -jumpForce
-            jumpForce = 0
-            onGround = 0
-            y += ySpeed
+            playerJump()
         }
     }
 
     // if not on the ground, allow the player to rotate
     else {
+		rotationSpeed = 1
+		if key_shift {
+			rotationSpeed = 7
+		}
         if key_right {
-            spriteRotation -= 1
+            spriteRotation -= rotationSpeed
         }
         if key_left {
-            spriteRotation += 1
+            spriteRotation += rotationSpeed
         }
     }
 }
 
 function playerCollisions() {
-    // check if the player is about to hit a solid object
-    if variable_instance_exists(id, "collidingObj") {
-        lastCollider = collidingObj
-    }
-
     // don't allow the player to be inside a solid object
     while place_meeting(x, y, obj_wall) {
         y -= 1
@@ -146,10 +151,11 @@ function playerCollisions() {
         // only bounce off vertical walls, not slopes
         if !(object_get_parent(collidingObj.object_index) == obj_wall_angle)
         {
-            playerCollideWall(collidingObj)
+            playerCollideWall()
         }
      }
 
+    #region possibly unused tail/nose sliding code
     // // slow down while nose or tail grinding
     // if place_meeting(x, y + 1, obj_wall) {
     //     collidingObj = instance_place(x, y + 1, obj_wall)
@@ -167,6 +173,13 @@ function playerCollisions() {
     //     }
     // }  
     // }
+    #endregion
+	
+	// check if we are at the goal
+	if place_meeting(x, y, obj_goal)
+	{
+		room_goto_next()
+	}
 
 }
 
@@ -202,7 +215,7 @@ function drawPlayerSprite() {
     }
 
     // medium slope
-    if abs(spriteRotation) ==  36.87 {
+    if abs(spriteRotation) == 36.87 {
         xPos = x + (5 * sign(spriteRotation))
         yPos = y + 5
     }
@@ -229,22 +242,37 @@ function adjustSpeedOnSlope() {
 
     if !downhill {
         moveSpeed = abs(xSpeed) + abs(ySpeed)
-        moveSpeed -= (abs(moveSlope) / 40)
-        //xSpeed = moveSpeed - abs(ySpeed)
+        moveSpeed -= (abs(moveSlope) / 5)
         ySpeed = -abs(moveSlope * xSpeed)
         xSpeed = (moveSpeed - abs(ySpeed)) * xDir
     }
 }
 
 function checkAngleOnLanding() {
-    angleDiff = abs(spriteRotation - floorAngle)
-    show_debug_message(string(angleDiff))
-    if angleDiff < 20 {
+    // When the player is tilted to the right, the angle is negative. Left is positive
+    // Slopes - down to the right is negative, up to the right is positive
+	
+	if spriteRotation > 180
+	{
+		playerAngle = 360 - spriteRotation
+	}
+	else if spriteRotation < -180
+	{
+		playerAngle = -360 - spriteRotation
+	}
+	else
+	{
+		playerAngle = spriteRotation
+	}
+	
+    angleDiff = abs(playerAngle - floorAngle)
+    show_debug_message("Floor angle: " + string(floorAngle) + " Player angle: " + string(playerAngle))
+    if angleDiff < goodAngleThreshold {
         obj_hud.playerText = "NICE!"
         obj_hud.messageTimer = obj_hud.maxMessageTimer
         xSpeed = (0.75 * ySpeed) * xDir
         ySpeed = 0
-    }
+    } 
 
     else {
         obj_hud.playerText = "BAD!"
@@ -253,4 +281,12 @@ function checkAngleOnLanding() {
         ySpeed = 0
 
     }
+}
+
+function playerJump() {
+    ySpeed = -jumpForce * 1.2
+    xSpeed += ((jumpForce * abs(moveSlope)) * xDir) * 0.8
+    jumpForce = 0
+    onGround = 0
+    y += ySpeed
 }
