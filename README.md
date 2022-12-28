@@ -7,3 +7,5 @@ This folder contains sprites, backgrounds, music, and other external resources.
 ### gamemaker-project
 This folder contains the scripts and other GameMaker project data.
 
+### Concept
+Reach the end of the level while maintaining momentum. Show the timer on screen and display record at the end.

@@ -7,7 +7,7 @@
   "edgeFiltering": false,
   "collisionTolerance": 0,
   "bbox_left": 3,
-  "bbox_right": 30,
+  "bbox_right": 31,
   "bbox_top": 0,
   "bbox_bottom": 63,
   "origin": 7,
