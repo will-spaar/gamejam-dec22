@@ -8,8 +8,8 @@ function playerInit() {
 
     xSpeed = 0
     ySpeed = 0
-    maxXSpeed = 8
-    maxYSpeed = 8
+    maxXSpeed = 16
+    maxYSpeed = 16
     moveSpeed = 0
 
     gravForce = 0.1
@@ -17,9 +17,19 @@ function playerInit() {
 
     onGround = 1
     moveSlope = 0
+
+    global.paused = 0
 }
 
 function playerUpdate() {
+    if global.paused {
+        image_speed = 0
+        key_escape = keyboard_check_pressed(vk_escape)
+        if key_escape {
+            global.paused = 0
+        }
+        return
+    }
     // get player inputs
     playerControls()
 
@@ -93,16 +103,34 @@ function playerControls() {
     key_space = keyboard_check(vk_space)
 	key_shift = keyboard_check(vk_shift)
     key_space_released = keyboard_check_released(vk_space)
+    key_escape = keyboard_check_pressed(vk_escape)
+
+    // pause the game
+    if key_escape {
+        global.paused = 1
+    }
 
     // if on the ground, allow the player to jump control horizontal speed
     if onGround {
         if !(abs(xSpeed) < 0.2 && ySpeed != 0) {
             if key_right {
-                xSpeed += 0.05
+                if xDir == -1 {
+                    xSpeed += 0.2
+                    spriteRotation = -45
+                }
+                else {
+                    xSpeed += 0.03
+                }
             }
 
             if key_left {
-                xSpeed -= 0.05
+                if xDir == 1 {
+                    xSpeed -= 0.2
+                    spriteRotation = 45
+                }
+                else {
+                    xSpeed -= 0.03
+                }
             }
         }
 
@@ -235,14 +263,14 @@ function adjustSpeedOnSlope() {
 
     if downhill {
         moveSpeed = abs(xSpeed) + abs(ySpeed)
-        moveSpeed += (abs(moveSlope) / 20)
+        moveSpeed += (abs(moveSlope) / 30)
         ySpeed = (abs(moveSlope) * abs(xSpeed))
         xSpeed = (moveSpeed - ySpeed) * xDir
     }
 
     if !downhill {
         moveSpeed = abs(xSpeed) + abs(ySpeed)
-        moveSpeed -= (abs(moveSlope) / 5)
+        moveSpeed -= (abs(moveSlope) / 10)
         ySpeed = -abs(moveSlope * xSpeed)
         xSpeed = (moveSpeed - abs(ySpeed)) * xDir
     }
@@ -251,14 +279,16 @@ function adjustSpeedOnSlope() {
 function checkAngleOnLanding() {
     // When the player is tilted to the right, the angle is negative. Left is positive
     // Slopes - down to the right is negative, up to the right is positive
-	
+	speedBoost = 1
 	if spriteRotation > 180
 	{
 		playerAngle = 360 - spriteRotation
+        speedBoost = 1.2
 	}
 	else if spriteRotation < -180
 	{
 		playerAngle = -360 - spriteRotation
+        speedBoost = 1.2
 	}
 	else
 	{
@@ -266,11 +296,13 @@ function checkAngleOnLanding() {
 	}
 	
     angleDiff = abs(playerAngle - floorAngle)
-    show_debug_message("Floor angle: " + string(floorAngle) + " Player angle: " + string(playerAngle))
     if angleDiff < goodAngleThreshold {
         obj_hud.playerText = "NICE!"
         obj_hud.messageTimer = obj_hud.maxMessageTimer
-        xSpeed = (0.75 * ySpeed) * xDir
+        newXSpeed = (0.75 * ySpeed * speedBoost) * xDir
+        if abs(newXSpeed) > abs(xSpeed) {
+            xSpeed = newXSpeed
+        }
         ySpeed = 0
     } 
 

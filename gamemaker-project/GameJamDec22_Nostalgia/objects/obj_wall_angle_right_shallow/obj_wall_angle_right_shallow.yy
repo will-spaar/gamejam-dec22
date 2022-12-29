@@ -1,19 +1,18 @@
 {
-  "name": "obj_wall_angle_right_shallow",
   "spriteId": {
     "name": "spr_wall_angle_shallow",
     "path": "sprites/spr_wall_angle_shallow/spr_wall_angle_shallow.yy",
   },
-  "spriteMaskId": null,
-  "visible": true,
   "solid": false,
-  "persistent": false,
-  "physicsObject": false,
+  "visible": true,
   "managed": true,
+  "spriteMaskId": null,
+  "persistent": false,
   "parentObjectId": {
     "name": "obj_wall_angle",
     "path": "objects/obj_wall_angle/obj_wall_angle.yy",
   },
+  "physicsObject": false,
   "physicsSensor": false,
   "physicsShape": 1,
   "physicsGroup": 1,
@@ -35,6 +34,7 @@
     "path": "folders/Objects/Walls.yy",
   },
   "resourceVersion": "1.0",
+  "name": "obj_wall_angle_right_shallow",
   "tags": [],
   "resourceType": "GMObject",
 }

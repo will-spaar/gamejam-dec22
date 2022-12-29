@@ -1,19 +1,18 @@
 {
-  "name": "obj_wall_angle_left_medium",
   "spriteId": {
     "name": "spr_wall_angle_medium_left",
     "path": "sprites/spr_wall_angle_medium_left/spr_wall_angle_medium_left.yy",
   },
-  "spriteMaskId": null,
-  "visible": true,
   "solid": false,
-  "persistent": false,
-  "physicsObject": false,
+  "visible": true,
   "managed": true,
+  "spriteMaskId": null,
+  "persistent": false,
   "parentObjectId": {
     "name": "obj_wall_angle",
     "path": "objects/obj_wall_angle/obj_wall_angle.yy",
   },
+  "physicsObject": false,
   "physicsSensor": false,
   "physicsShape": 1,
   "physicsGroup": 1,
@@ -35,6 +34,7 @@
     "path": "folders/Objects/Walls.yy",
   },
   "resourceVersion": "1.0",
+  "name": "obj_wall_angle_left_medium",
   "tags": [],
   "resourceType": "GMObject",
 }

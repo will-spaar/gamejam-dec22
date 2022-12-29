@@ -1,17 +1,14 @@
 {
   "spriteId": {
-    "name": "spr_wall_angle",
-    "path": "sprites/spr_wall_angle/spr_wall_angle.yy",
+    "name": "spr_holdSpace",
+    "path": "sprites/spr_holdSpace/spr_holdSpace.yy",
   },
   "solid": false,
   "visible": true,
   "managed": true,
   "spriteMaskId": null,
   "persistent": false,
-  "parentObjectId": {
-    "name": "obj_wall_angle",
-    "path": "objects/obj_wall_angle/obj_wall_angle.yy",
-  },
+  "parentObjectId": null,
   "physicsObject": false,
   "physicsSensor": false,
   "physicsShape": 1,
@@ -24,17 +21,15 @@
   "physicsStartAwake": true,
   "physicsKinematic": false,
   "physicsShapePoints": [],
-  "eventList": [
-    {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
-  ],
+  "eventList": [],
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Walls",
-    "path": "folders/Objects/Walls.yy",
+    "name": "Tutorials",
+    "path": "folders/Objects/Tutorials.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_wall_angle_right",
+  "name": "obj_holdSpace",
   "tags": [],
   "resourceType": "GMObject",
 }

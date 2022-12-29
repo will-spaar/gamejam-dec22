@@ -3,7 +3,8 @@ function hudInit() {
     messageTimer = 0
     playerText = ""
     timer = 0
-    levelTimer = 0
+    seconds = 0
+    minutes = 0
 }
 
 function drawHud() {
@@ -11,6 +12,9 @@ function drawHud() {
 	drawTextAbovePlayer()
 	drawTime()
 	//drawDebugInfo()
+    if global.paused {
+        drawPause()
+    }
 }
 
 function drawJumpMeter(){
@@ -51,17 +55,28 @@ function drawTextAbovePlayer() {
 }
 
 function drawTime() {
-    timer++
-    if timer >= 60 {
-        timer = 0
-        levelTimer++
+    if !global.paused {
+        timer++
+        if timer >= 60 {
+            timer = 0
+            seconds++
+            if seconds >= 60 {
+                minutes++
+                seconds = 0
+            }
+        }
     }
     startX = camera_get_view_x(view_camera[0]) + 600
     startY = camera_get_view_y(view_camera[0]) + 5
-    seconds = levelTimer mod 60
     secondsString = string_format(seconds, 2, 0)
     secondsString = string_replace_all(secondsString, " ", "0")
-    minutes = 0
     draw_set_color(c_black)
     draw_text(startX, startY, string(minutes) + ":" + secondsString)
+}
+
+function drawPause() {
+    startX = camera_get_view_x(view_camera[0]) + 600
+    startY = camera_get_view_y(view_camera[0]) + 100
+    draw_set_color(c_black)
+    draw_text(startX, startY, "PAUSED")
 }
