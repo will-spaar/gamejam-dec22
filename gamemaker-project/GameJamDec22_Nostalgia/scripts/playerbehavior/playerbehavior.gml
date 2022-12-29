@@ -8,8 +8,8 @@ function playerInit() {
 
     xSpeed = 0
     ySpeed = 0
-    maxXSpeed = 16
-    maxYSpeed = 16
+    maxXSpeed = 14
+    maxYSpeed = 14
     moveSpeed = 0
 
     gravForce = 0.1
