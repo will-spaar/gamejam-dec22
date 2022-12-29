@@ -35,7 +35,7 @@ function confirmSelection() {
 		game_end()
 	}
 	if option == "start" {
-		room_goto(Level1)
+ 		room_goto(TestLevel)
 	}
 }
 

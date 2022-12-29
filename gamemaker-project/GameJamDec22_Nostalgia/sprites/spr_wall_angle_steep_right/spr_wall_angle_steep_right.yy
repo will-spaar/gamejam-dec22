@@ -7,10 +7,10 @@
   "edgeFiltering": false,
   "collisionTolerance": 0,
   "swfPrecision": 2.525,
-  "bbox_left": -32,
-  "bbox_right": 31,
-  "bbox_top": 0,
-  "bbox_bottom": 62,
+  "bbox_left": -19,
+  "bbox_right": 30,
+  "bbox_top": -17,
+  "bbox_bottom": 79,
   "HTile": false,
   "VTile": false,
   "For3D": false,
@@ -24,12 +24,12 @@
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"compositeImage":{"FrameId":{"name":"44f8f473-32d0-4506-bdeb-68fda10145b7","path":"sprites/spr_wall_angle/spr_wall_angle.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"44f8f473-32d0-4506-bdeb-68fda10145b7","path":"sprites/spr_wall_angle/spr_wall_angle.yy",},"LayerId":{"name":"5db57312-9f1b-46af-aebc-423d58f1c032","path":"sprites/spr_wall_angle/spr_wall_angle.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_wall_angle","path":"sprites/spr_wall_angle/spr_wall_angle.yy",},"resourceVersion":"1.0","name":"44f8f473-32d0-4506-bdeb-68fda10145b7","tags":[],"resourceType":"GMSpriteFrame",},
+    {"compositeImage":{"FrameId":{"name":"44f8f473-32d0-4506-bdeb-68fda10145b7","path":"sprites/spr_wall_angle_steep_right/spr_wall_angle_steep_right.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
+        {"FrameId":{"name":"44f8f473-32d0-4506-bdeb-68fda10145b7","path":"sprites/spr_wall_angle_steep_right/spr_wall_angle_steep_right.yy",},"LayerId":{"name":"5db57312-9f1b-46af-aebc-423d58f1c032","path":"sprites/spr_wall_angle_steep_right/spr_wall_angle_steep_right.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
+      ],"parent":{"name":"spr_wall_angle_steep_right","path":"sprites/spr_wall_angle_steep_right/spr_wall_angle_steep_right.yy",},"resourceVersion":"1.0","name":"44f8f473-32d0-4506-bdeb-68fda10145b7","tags":[],"resourceType":"GMSpriteFrame",},
   ],
   "sequence": {
-    "spriteId": {"name":"spr_wall_angle","path":"sprites/spr_wall_angle/spr_wall_angle.yy",},
+    "spriteId": {"name":"spr_wall_angle_steep_right","path":"sprites/spr_wall_angle_steep_right/spr_wall_angle_steep_right.yy",},
     "timeUnits": 1,
     "playback": 1,
     "playbackSpeed": 30.0,
@@ -41,7 +41,7 @@
     "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore`1","elementType":"MomentsEventKeyframe",},
     "tracks": [
       {"name":"frames","spriteId":null,"keyframes":{"Keyframes":[
-            {"id":"42f640fd-2fcb-4ae3-a369-ef5afa7ef85c","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"44f8f473-32d0-4506-bdeb-68fda10145b7","path":"sprites/spr_wall_angle/spr_wall_angle.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
+            {"id":"7514e7af-20e1-4329-9c01-4ad8e88648c6","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"44f8f473-32d0-4506-bdeb-68fda10145b7","path":"sprites/spr_wall_angle_steep_right/spr_wall_angle_steep_right.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
           ],"resourceVersion":"1.0","resourceType":"KeyframeStore`1","elementType":"SpriteFrameKeyframe",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
     ],
     "visibleRange": null,
@@ -58,9 +58,9 @@
     "yorigin": 16,
     "eventToFunction": {},
     "eventStubScript": null,
-    "parent": {"name":"spr_wall_angle","path":"sprites/spr_wall_angle/spr_wall_angle.yy",},
+    "parent": {"name":"spr_wall_angle_steep_right","path":"sprites/spr_wall_angle_steep_right/spr_wall_angle_steep_right.yy",},
     "resourceVersion": "1.4",
-    "name": "spr_wall_angle",
+    "name": "spr_wall_angle_steep_right",
     "tags": [],
     "resourceType": "GMSequence",
   },
@@ -73,7 +73,7 @@
     "path": "folders/Sprites.yy",
   },
   "resourceVersion": "1.0",
-  "name": "spr_wall_angle",
+  "name": "spr_wall_angle_steep_right",
   "tags": [],
   "resourceType": "GMSprite",
 }

@@ -5,13 +5,14 @@ function hudInit() {
     timer = 0
     seconds = 0
     minutes = 0
+    jumpStateText = " "
 }
 
 function drawHud() {
 	drawJumpMeter()
-	drawTextAbovePlayer()
+	//drawTextAbovePlayer()
 	drawTime()
-	//drawDebugInfo()
+	drawDebugInfo()
     if global.paused {
         drawPause()
     }
@@ -32,7 +33,7 @@ function drawJumpMeter(){
     jumpForce = obj_player.jumpForce
 
     draw_set_color(c_red)
-    draw_roundrect(xEnd, yStart - (jumpForce * 20), xStart, yStart, false)
+    draw_roundrect(xEnd, yStart - (jumpForce * 25), xStart, yStart, false)
     draw_set_color(c_black)
     draw_roundrect(xEnd, yEnd, xStart, yStart, true)
 }
@@ -72,6 +73,8 @@ function drawTime() {
     secondsString = string_replace_all(secondsString, " ", "0")
     draw_set_color(c_black)
     draw_text(startX, startY, string(minutes) + ":" + secondsString)
+
+    draw_text(obj_player.x, obj_player.y - 100, jumpStateText)
 }
 
 function drawPause() {

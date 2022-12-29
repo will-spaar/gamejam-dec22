@@ -8,11 +8,11 @@ function playerInit() {
 
     xSpeed = 0
     ySpeed = 0
-    maxXSpeed = 14
-    maxYSpeed = 14
+    maxXSpeed = 18
+    maxYSpeed = 18
     moveSpeed = 0
 
-    gravForce = 0.1
+    gravForce = 0.55
     jumpForce = 0
 
     onGround = 1
@@ -43,13 +43,25 @@ function playerUpdate() {
     if xSpeed < 0 {
         xDir = -1
     }
+    
+    if !onGround {
+        // low gravity at apex of jump
+        if abs(ySpeed) < 0.5 {
+            gravForce = 0.05
+            obj_hud.jumpStateText = "Hang"
+        }
 
-    // set gravity based on whether we are rising or falling
-    if ySpeed < 0 {
-        gravForce = 0.2
-    }
-    else {
-        gravForce = 0.4
+        // low gravity while rising
+        else if ySpeed < 0 {
+            gravForce = 0.2
+            obj_hud.jumpStateText = "Rise"
+        }
+
+        // high gravity while falling
+        else {
+            obj_hud.jumpStateText = "Fall"
+            gravForce = 0.55
+        }
     }
 
     // if the player is in the air, apply gravity
@@ -113,30 +125,28 @@ function playerControls() {
     // if on the ground, allow the player to jump control horizontal speed
     if onGround {
         if !(abs(xSpeed) < 0.2 && ySpeed != 0) {
-            if key_right {
+            if key_right && xSpeed < (maxXSpeed / 2) {
                 if xDir == -1 {
-                    xSpeed += 0.2
-                    spriteRotation = -45
+                    xSpeed += 0.4
                 }
                 else {
-                    xSpeed += 0.03
+                    xSpeed += 0.08
                 }
             }
 
-            if key_left {
+            if key_left && xSpeed > (-maxXSpeed / 2){
                 if xDir == 1 {
-                    xSpeed -= 0.2
-                    spriteRotation = 45
+                    xSpeed -= 0.4
                 }
                 else {
-                    xSpeed -= 0.03
+                    xSpeed -= 0.08
                 }
             }
         }
 
         if key_space {
-            jumpForce += 0.2
-            jumpForce = min(jumpForce, 5)
+            jumpForce += 0.06
+            jumpForce = min(jumpForce, 4)
         }
 
         if key_space_released {
@@ -263,14 +273,14 @@ function adjustSpeedOnSlope() {
 
     if downhill {
         moveSpeed = abs(xSpeed) + abs(ySpeed)
-        moveSpeed += (abs(moveSlope) / 30)
+        moveSpeed += (abs(moveSlope) / 60)
         ySpeed = (abs(moveSlope) * abs(xSpeed))
         xSpeed = (moveSpeed - ySpeed) * xDir
     }
 
     if !downhill {
         moveSpeed = abs(xSpeed) + abs(ySpeed)
-        moveSpeed -= (abs(moveSlope) / 10)
+        moveSpeed -= (abs(moveSlope) / 8)
         ySpeed = -abs(moveSlope * xSpeed)
         xSpeed = (moveSpeed - abs(ySpeed)) * xDir
     }
@@ -283,12 +293,12 @@ function checkAngleOnLanding() {
 	if spriteRotation > 180
 	{
 		playerAngle = 360 - spriteRotation
-        speedBoost = 1.2
+        speedBoost = 1.1
 	}
 	else if spriteRotation < -180
 	{
 		playerAngle = -360 - spriteRotation
-        speedBoost = 1.2
+        speedBoost = 1.1
 	}
 	else
 	{
@@ -299,7 +309,7 @@ function checkAngleOnLanding() {
     if angleDiff < goodAngleThreshold {
         obj_hud.playerText = "NICE!"
         obj_hud.messageTimer = obj_hud.maxMessageTimer
-        newXSpeed = (0.75 * ySpeed * speedBoost) * xDir
+        newXSpeed = (0.5 * ySpeed * speedBoost) * xDir
         if abs(newXSpeed) > abs(xSpeed) {
             xSpeed = newXSpeed
         }
@@ -316,7 +326,7 @@ function checkAngleOnLanding() {
 }
 
 function playerJump() {
-    ySpeed = -jumpForce * 1.2
+    ySpeed = -jumpForce * 1.6
     xSpeed += ((jumpForce * abs(moveSlope)) * xDir) * 0.8
     jumpForce = 0
     onGround = 0
