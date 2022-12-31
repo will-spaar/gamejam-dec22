@@ -1,7 +1,7 @@
 {
   "spriteId": {
-    "name": "spr_wall_angle",
-    "path": "sprites/spr_wall_angle/spr_wall_angle.yy",
+    "name": "spr_wall_angle_left",
+    "path": "sprites/spr_wall_angle_left/spr_wall_angle_left.yy",
   },
   "solid": false,
   "visible": true,

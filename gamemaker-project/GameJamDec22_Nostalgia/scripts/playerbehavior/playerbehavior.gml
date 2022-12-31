@@ -1,6 +1,6 @@
 function playerInit() {
     // initialize variables - zero speed, facing right, default sprite
-    sprite_index = spr_player
+    sprite_index = spr_skater
     image_speed = 2
     spriteRotation = 0
     goodAngleThreshold = 25
@@ -8,8 +8,8 @@ function playerInit() {
 
     xSpeed = 0
     ySpeed = 0
-    maxXSpeed = 18
-    maxYSpeed = 18
+    maxXSpeed = 250
+    maxYSpeed = 250
     moveSpeed = 0
 
     gravForce = 0.55
@@ -47,20 +47,20 @@ function playerUpdate() {
     if !onGround {
         // low gravity at apex of jump
         if abs(ySpeed) < 0.5 {
-            gravForce = 0.05
+            gravForce = 0.5
             obj_hud.jumpStateText = "Hang"
         }
 
         // low gravity while rising
         else if ySpeed < 0 {
-            gravForce = 0.2
+            gravForce = 5
             obj_hud.jumpStateText = "Rise"
         }
 
         // high gravity while falling
         else {
             obj_hud.jumpStateText = "Fall"
-            gravForce = 0.55
+            gravForce = 5.5
         }
     }
 
@@ -87,11 +87,11 @@ function playerUpdate() {
     {
         collidingObj = instance_place(x, y + 1, obj_wall) 
         floorAngle = collidingObj.angle
+        moveSlope = collidingObj.slope
         if onGround == 0 {
             checkAngleOnLanding()
         }
         spriteRotation = floorAngle
-        moveSlope = collidingObj.slope
         onGround = 1
         adjustSpeedOnSlope()
     }
@@ -99,6 +99,8 @@ function playerUpdate() {
     // move player
     x += xSpeed
     y += ySpeed
+
+    moveCamera()
 	
 	// if outside the level boundaries, restart the level
 	if x > room_width || x < 0 {
@@ -127,19 +129,19 @@ function playerControls() {
         if !(abs(xSpeed) < 0.2 && ySpeed != 0) {
             if key_right && xSpeed < (maxXSpeed / 2) {
                 if xDir == -1 {
-                    xSpeed += 0.4
+                    xSpeed += 6
                 }
                 else {
-                    xSpeed += 0.08
+                    xSpeed += 1.2
                 }
             }
 
             if key_left && xSpeed > (-maxXSpeed / 2){
                 if xDir == 1 {
-                    xSpeed -= 0.4
+                    xSpeed -= 6
                 }
                 else {
-                    xSpeed -= 0.08
+                    xSpeed -= 1.2
                 }
             }
         }
@@ -176,7 +178,7 @@ function playerCollisions() {
     }
 
     // check if there is a wall below us
-    if !(place_meeting(x, y + 10, obj_wall))
+    if !(place_meeting(x, y + 120, obj_wall))
     {
         onGround = 0
         jumpForce = 0
@@ -248,20 +250,20 @@ function drawPlayerSprite() {
     // adjust the location of the player sprite based on the slope the player is currently riding
     // shallow slope
     if abs(spriteRotation) == 22.5 {
-        xPos = x + (4 * sign(spriteRotation))
-        yPos = y + 4
+        xPos = x + (110 * sign(spriteRotation))
+        yPos = y + 110
     }
 
     // medium slope
     if abs(spriteRotation) == 36.87 {
-        xPos = x + (5 * sign(spriteRotation))
-        yPos = y + 5
+        xPos = x + (200 * sign(spriteRotation))
+        yPos = y + 200
     }
 
     // steep slope
     if abs(spriteRotation) == 45 {
-        xPos = x + (6 * sign(spriteRotation))
-        yPos = y + 6
+        xPos = x + (140 * sign(spriteRotation))
+        yPos = y + 140
     }
 
     draw_sprite_ext(sprite_index, image_index, xPos, yPos, image_xscale, image_yscale, spriteRotation, c_white, 1)
@@ -273,16 +275,16 @@ function adjustSpeedOnSlope() {
 
     if downhill {
         moveSpeed = abs(xSpeed) + abs(ySpeed)
-        moveSpeed += (abs(moveSlope) / 60)
+        moveSpeed += (abs(moveSlope)) * 3
         ySpeed = (abs(moveSlope) * abs(xSpeed))
         xSpeed = (moveSpeed - ySpeed) * xDir
     }
 
     if !downhill {
         moveSpeed = abs(xSpeed) + abs(ySpeed)
-        moveSpeed -= (abs(moveSlope) / 8)
+        moveSpeed -= ((abs(moveSlope)) / 10)
         ySpeed = -abs(moveSlope * xSpeed)
-        xSpeed = (moveSpeed - abs(ySpeed)) * xDir
+        xSpeed = (moveSpeed - (abs(ySpeed)) ) * xDir
     }
 }
 
@@ -290,6 +292,7 @@ function checkAngleOnLanding() {
     // When the player is tilted to the right, the angle is negative. Left is positive
     // Slopes - down to the right is negative, up to the right is positive
 	speedBoost = 1
+    
 	if spriteRotation > 180
 	{
 		playerAngle = 360 - spriteRotation
@@ -304,31 +307,40 @@ function checkAngleOnLanding() {
 	{
 		playerAngle = spriteRotation
 	}
-	
+
     angleDiff = abs(playerAngle - floorAngle)
     if angleDiff < goodAngleThreshold {
         obj_hud.playerText = "NICE!"
         obj_hud.messageTimer = obj_hud.maxMessageTimer
-        newXSpeed = (0.5 * ySpeed * speedBoost) * xDir
-        if abs(newXSpeed) > abs(xSpeed) {
-            xSpeed = newXSpeed
+        if floorAngle = 0 {
+            ySpeed = 0
         }
-        ySpeed = 0
+        else {
+            newXSpeed = (ySpeed * speedBoost) * xDir
+            if abs(newXSpeed) > abs(xSpeed) {
+                xSpeed = newXSpeed
+            }
+        }
     } 
 
     else {
         obj_hud.playerText = "BAD!"
         obj_hud.messageTimer = obj_hud.maxMessageTimer
         xSpeed = (0.1 * ySpeed) * xDir
-        ySpeed = 0
 
     }
 }
 
 function playerJump() {
-    ySpeed = -jumpForce * 1.6
-    xSpeed += ((jumpForce * abs(moveSlope)) * xDir) * 0.8
+    ySpeed = -jumpForce * 45
+    xSpeed += (((jumpForce) * abs(moveSlope)) * xSpeed) * 0.15
     jumpForce = 0
     onGround = 0
     y += ySpeed
+}
+
+function moveCamera() {
+    cameraX = camera_get_view_x(view_camera[0]) + xSpeed
+    cameraY = camera_get_view_y(view_camera[0]) + ySpeed
+    camera_set_view_pos(view_camera[0], cameraX, cameraY)
 }

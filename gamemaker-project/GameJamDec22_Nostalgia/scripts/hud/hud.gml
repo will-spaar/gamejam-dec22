@@ -6,13 +6,14 @@ function hudInit() {
     seconds = 0
     minutes = 0
     jumpStateText = " "
+    depth = 100000
 }
 
 function drawHud() {
 	drawJumpMeter()
 	//drawTextAbovePlayer()
-	drawTime()
-	drawDebugInfo()
+	//drawTime()
+	//drawDebugInfo()
     if global.paused {
         drawPause()
     }
@@ -26,14 +27,14 @@ function drawJumpMeter(){
     }
 
     // draw the meter representing the charged jump force
-    xStart = obj_player.x - 40
+    xStart = obj_player.x - 600
     yStart = obj_player.y 
-    xEnd   = xStart - 10
-    yEnd   = yStart - 100
+    xEnd   = xStart - 50
+    yEnd   = yStart - 600
     jumpForce = obj_player.jumpForce
 
     draw_set_color(c_red)
-    draw_roundrect(xEnd, yStart - (jumpForce * 25), xStart, yStart, false)
+    draw_roundrect(xEnd, yStart - (jumpForce * 150), xStart, yStart, false)
     draw_set_color(c_black)
     draw_roundrect(xEnd, yEnd, xStart, yStart, true)
 }
@@ -49,8 +50,9 @@ function drawTextAbovePlayer() {
     if messageTimer > 0 {
         messageTimer--
         draw_set_color(c_black)
-        startX = obj_player.x - 10
+        startX = obj_player.x - 20
         startY = obj_player.y - 100
+        draw_set_font(global.messageFont)
         draw_text(startX, startY, playerText)
     }
 }
@@ -67,14 +69,13 @@ function drawTime() {
             }
         }
     }
-    startX = camera_get_view_x(view_camera[0]) + 600
+    startX = camera_get_view_x(view_camera[0]) + 7500
     startY = camera_get_view_y(view_camera[0]) + 5
     secondsString = string_format(seconds, 2, 0)
     secondsString = string_replace_all(secondsString, " ", "0")
     draw_set_color(c_black)
+    draw_set_font(global.timerFont)
     draw_text(startX, startY, string(minutes) + ":" + secondsString)
-
-    draw_text(obj_player.x, obj_player.y - 100, jumpStateText)
 }
 
 function drawPause() {
